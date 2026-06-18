@@ -1,0 +1,129 @@
+/* Imports a modern, clean font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+/* Apply font family to entire application */
+html, body, [class*="css"], .stApp {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+/* Glassmorphism containers for KPI cards and summaries */
+.kpi-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 10px 0;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 40px 0 rgba(255, 255, 255, 0.05);
+}
+
+.kpi-title {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.kpi-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.kpi-orange {
+    background: linear-gradient(135deg, #ff9900 0%, #ff5500 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.kpi-purple {
+    background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.kpi-green {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* Premium Page Header styling */
+.main-header {
+    font-size: 2.8rem;
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(90deg, #a855f7 0%, #00f2fe 50%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+}
+
+.subheader-custom {
+    font-size: 1.6rem;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #f3f4f6;
+}
+
+/* Sidebar Styling enhancements */
+section[data-testid="stSidebar"] {
+    background-color: #0e1117 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+section[data-testid="stSidebar"] .stMarkdown h1 {
+    font-size: 1.5rem !important;
+    background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styled metric widgets overrides */
+div[data-testid="stMetricValue"] {
+    font-weight: 800 !important;
+    font-size: 2.2rem !important;
+}
+
+/* Glassy background for normal Streamlit tabs */
+div[data-baseweb="tab-list"] {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+button[data-baseweb="tab"] {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Custom horizontal line style */
+.gradient-hr {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    border: none;
+    margin: 25px 0;
+}
