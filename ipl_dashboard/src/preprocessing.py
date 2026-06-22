@@ -6,27 +6,33 @@ def get_unique_seasons(matches_df: pd.DataFrame) -> List[int]:
     """
     Returns sorted list of unique seasons from matches.
     """
-    return sorted(matches_df["season"].unique().tolist(), reverse=True)
+    if "season" not in matches_df.columns:
+        return []
+    return sorted(matches_df["season"].dropna().unique().astype(int).tolist(), reverse=True)
 
 def get_unique_teams(matches_df: pd.DataFrame) -> List[str]:
     """
     Returns sorted list of unique teams from matches.
     """
     # Exclude No Result or other filler names
-    teams = set(matches_df["team1"].dropna().unique()).union(set(matches_df["team2"].dropna().unique()))
+    teams1 = set(matches_df["team1"].dropna().unique())
+    teams2 = set(matches_df["team2"].dropna().unique())
+    teams = teams1.union(teams2)
+    # Filter out anything that is not a proper team name (e.g. empty or No Result)
+    teams = {t for t in teams if str(t).strip() not in ["", "No Result", "Unknown"]}
     return sorted(list(teams))
 
 def get_unique_venues(matches_df: pd.DataFrame) -> List[str]:
     """
     Returns sorted list of unique venues.
     """
-    return sorted(matches_df["venue"].dropna().unique().tolist())
+    return sorted(matches_df["venue"].dropna().unique().astype(str).tolist())
 
 def get_unique_cities(matches_df: pd.DataFrame) -> List[str]:
     """
     Returns sorted list of unique cities.
     """
-    return sorted(matches_df["city"].dropna().unique().tolist())
+    return sorted(matches_df["city"].dropna().unique().astype(str).tolist())
 
 def filter_matches(
     matches_df: pd.DataFrame,
@@ -37,9 +43,12 @@ def filter_matches(
     """
     Filters matches dataframe based on season, team, and venue selections.
     """
-    df = matches_df.copy()
+    df: pd.DataFrame = matches_df.copy()
     if season != "All":
-        df = df[df["season"] == int(season)]
+        try:
+            df = df[df["season"] == int(season)]
+        except ValueError:
+            pass
     if team != "All":
         df = df[(df["team1"] == team) | (df["team2"] == team)]
     if venue != "All":
@@ -50,6 +59,7 @@ def prepare_win_prediction_data(matches_df: pd.DataFrame, deliveries_df: pd.Data
     """
     Transforms the ball-by-ball deliveries dataset into a chase dataset 
     suitable for training a match win prediction model.
+    Uses vectorized operations for production-grade speed.
     """
     # 1. Group deliveries to compute first innings total scores
     first_innings = deliveries_df[deliveries_df["inning"] == 1].groupby("match_id")["total_runs"].sum().reset_index()
@@ -77,18 +87,19 @@ def prepare_win_prediction_data(matches_df: pd.DataFrame, deliveries_df: pd.Data
     chase_df["balls_left"] = chase_df["balls_left"].clip(lower=0, upper=120)
     
     # 7. Wickets left
-    # Determine if delivery resulted in a wicket
-    chase_df["is_wicket"] = chase_df["player_dismissed"].apply(
-        lambda x: 0 if pd.isna(x) or str(x).strip() in ["", "0", "nan", "None"] else 1
-    )
+    # Determine if delivery resulted in a wicket (Vectorized operation)
+    dismissed_series = chase_df["player_dismissed"].astype(str).str.strip()
+    chase_df["is_wicket"] = (~chase_df["player_dismissed"].isna() & 
+                             ~dismissed_series.isin(["", "0", "nan", "None", "none"])).astype(int)
+    
     chase_df["wickets_fallen"] = chase_df.groupby("match_id")["is_wicket"].cumsum()
     chase_df["wickets_left"] = 10 - chase_df["wickets_fallen"]
     chase_df["wickets_left"] = chase_df["wickets_left"].clip(lower=0, upper=10)
     
     # 8. Calculate Run Rates (CRR and RRR)
     balls_played = 120 - chase_df["balls_left"]
-    chase_df["crr"] = np.where(balls_played > 0, (chase_df["current_score"] * 6) / balls_played, 0)
-    chase_df["rrr"] = np.where(chase_df["balls_left"] > 0, (chase_df["runs_left"] * 6) / chase_df["balls_left"], 0)
+    chase_df["crr"] = np.where(balls_played > 0, (chase_df["current_score"] * 6) / balls_played, 0.0)
+    chase_df["rrr"] = np.where(chase_df["balls_left"] > 0, (chase_df["runs_left"] * 6) / chase_df["balls_left"], 0.0)
     
     # 9. Merge with matches metadata (winner and venue)
     # City column is more consolidated than venue, we'll map city from matches.

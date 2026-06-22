@@ -3,16 +3,15 @@ import requests
 import pandas as pd
 import numpy as np
 import streamlit as st
-from typing import Tuple, Optional
+from typing import Tuple, List, Dict, Any, Optional
 
 # Constants
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
-MATCHES_PATH = os.path.join(DATA_DIR, "matches.csv")
-DELIVERIES_PATH = os.path.join(DATA_DIR, "deliveries.csv")
+DATA_DIR: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+MATCHES_PATH: str = os.path.join(DATA_DIR, "matches.csv")
+DELIVERIES_PATH: str = os.path.join(DATA_DIR, "deliveries.csv")
 
 # Reliable fallback raw data URLs
-# lawalsegun2025 repository is prioritized because it contains the exact traditional Kaggle columns.
-DATA_URLS = {
+DATA_URLS: Dict[str, List[str]] = {
     "matches": [
         "https://raw.githubusercontent.com/lawalsegun2025/ipl_match_win_predictor/main/matches.csv",
         "https://raw.githubusercontent.com/Shivaae/IPL-DATA-/master/matches.csv",
@@ -26,7 +25,7 @@ DATA_URLS = {
 }
 
 # Standardizing team names (modernizing historical ones, correcting spellings)
-TEAM_NAME_MAP = {
+TEAM_NAME_MAP: Dict[str, str] = {
     "Delhi Daredevils": "Delhi Capitals",
     "Kings XI Punjab": "Punjab Kings",
     "Deccan Chargers": "Sunrisers Hyderabad",
@@ -36,19 +35,17 @@ TEAM_NAME_MAP = {
     "Royal Challengers Bengaluru": "Royal Challengers Bangalore",
 }
 
-def download_file(urls: list, dest_path: str, file_type: str) -> bool:
+def download_file(urls: List[str], dest_path: str, file_type: str) -> bool:
     """
     Downloads a file from a list of fallback URLs to the target destination.
     """
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
     
-    # We display streamlit indicators if running inside streamlit
     status_placeholder = None
     try:
         status_placeholder = st.empty()
         status_placeholder.info(f"Downloading {file_type} dataset. This might take a few moments...")
     except Exception:
-        # Not running in streamlit (e.g. running from command line script)
         print(f"Downloading {file_type} dataset...")
         
     for url in urls:
@@ -75,19 +72,21 @@ def check_and_download_data() -> bool:
     """
     Checks if datasets exist, and if not, triggers download.
     """
-    success = True
+    success: bool = True
     if not os.path.exists(MATCHES_PATH):
         success = success and download_file(DATA_URLS["matches"], MATCHES_PATH, "Matches")
     if not os.path.exists(DELIVERIES_PATH):
         success = success and download_file(DATA_URLS["deliveries"], DELIVERIES_PATH, "Deliveries")
     return success
 
-def standardize_team_names(df: pd.DataFrame, team_cols: list) -> pd.DataFrame:
+def standardize_team_names(df: pd.DataFrame, team_cols: List[str]) -> pd.DataFrame:
     """
     Standardizes team names in specified columns of the dataframe.
     """
     for col in team_cols:
         if col in df.columns:
+            # Handle possible null values safely
+            df[col] = df[col].fillna("Unknown")
             df[col] = df[col].replace(TEAM_NAME_MAP)
             # Strip extra whitespaces
             df[col] = df[col].astype(str).str.strip()
@@ -102,7 +101,10 @@ def load_matches_data() -> pd.DataFrame:
     if not os.path.exists(MATCHES_PATH):
         raise FileNotFoundError(f"Matches dataset not found at {MATCHES_PATH}")
         
-    df = pd.read_csv(MATCHES_PATH)
+    df: pd.DataFrame = pd.read_csv(MATCHES_PATH)
+    
+    # Standardize column headers to lowercase to resolve capital Season issues
+    df.columns = [col.lower() for col in df.columns]
     
     # Clean and standardize team names
     df = standardize_team_names(df, ["team1", "team2", "toss_winner", "winner"])
@@ -117,7 +119,7 @@ def load_matches_data() -> pd.DataFrame:
     
     # Extract year/season
     if "season" in df.columns:
-        df["season"] = df["season"].astype(int)
+        df["season"] = pd.to_numeric(df["season"], errors="coerce").fillna(0).astype(int)
     elif "date" in df.columns:
         df["season"] = df["date"].astype(str).str.extract(r"(\d{4})")[0].fillna(0).astype(float).astype(int)
         
@@ -126,6 +128,12 @@ def load_matches_data() -> pd.DataFrame:
         df["result_margin"] = pd.to_numeric(df["result_margin"], errors="coerce").fillna(0).astype(int)
         df["win_by_runs"] = np.where(df["result"] == "runs", df["result_margin"], 0)
         df["win_by_wickets"] = np.where(df["result"] == "wickets", df["result_margin"], 0)
+        
+    # Clean up standardizing win_by_runs and win_by_wickets to integers
+    if "win_by_runs" in df.columns:
+        df["win_by_runs"] = pd.to_numeric(df["win_by_runs"], errors="coerce").fillna(0).astype(int)
+    if "win_by_wickets" in df.columns:
+        df["win_by_wickets"] = pd.to_numeric(df["win_by_wickets"], errors="coerce").fillna(0).astype(int)
         
     return df
 
@@ -138,7 +146,10 @@ def load_deliveries_data() -> pd.DataFrame:
     if not os.path.exists(DELIVERIES_PATH):
         raise FileNotFoundError(f"Deliveries dataset not found at {DELIVERIES_PATH}")
         
-    df = pd.read_csv(DELIVERIES_PATH)
+    df: pd.DataFrame = pd.read_csv(DELIVERIES_PATH)
+    
+    # Standardize column headers to lowercase
+    df.columns = [col.lower() for col in df.columns]
     
     # Rename 'id' to 'match_id' if present (some versions of deliveries use 'id' instead of 'match_id')
     if "id" in df.columns and "match_id" not in df.columns:
@@ -158,6 +169,6 @@ def get_combined_data() -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Returns loaded matches and deliveries datasets.
     """
-    matches_df = load_matches_data()
-    deliveries_df = load_deliveries_data()
+    matches_df: pd.DataFrame = load_matches_data()
+    deliveries_df: pd.DataFrame = load_deliveries_data()
     return matches_df, deliveries_df
