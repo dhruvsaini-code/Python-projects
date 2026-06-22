@@ -1,4 +1,26 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.pyc
-.DS_Store
+*.pyo
+*.pyd
+
+# Caching and log files
 .ipynb_checkpoints/
+.DS_Store
+*.log
+
+# Data and Models (dynamically downloaded/trained on startup)
+data/*.csv
+models/*.pkl
+
+# Virtual Environments
+venv/
+env/
+.venv/
+ENV/
+
+# Editor files (VS Code / PyCharm)
+.vscode/
+.idea/
+.streamlit/config.toml
+.streamlit/secrets.toml

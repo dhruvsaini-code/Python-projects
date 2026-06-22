@@ -4,46 +4,83 @@
 /* Apply font family to entire application */
 html, body, [class*="css"], .stApp {
     font-family: 'Outfit', sans-serif !important;
+    background: var(--bg-gradient) !important;
+    color: var(--text-color) !important;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 242, 254, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(0, 242, 254, 0.2);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
 }
 
 /* Glassmorphism containers for KPI cards and summaries */
 .kpi-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--card-bg) !important;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 24px;
+    padding: 22px;
     margin: 10px 0;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px 0 var(--shadow-color);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: fadeInUp 0.5s ease-out forwards;
 }
 
 .kpi-card:hover {
-    transform: translateY(-5px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 12px 40px 0 rgba(255, 255, 255, 0.05);
+    transform: translateY(-4px);
+    border: 1px solid var(--border-hover-color);
+    box-shadow: 0 12px 40px 0 var(--shadow-hover-color);
 }
 
 .kpi-title {
-    font-size: 0.95rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
 }
 
 .kpi-value {
     font-size: 2.2rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .kpi-orange {
-    background: linear-gradient(135deg, #ff9900 0%, #ff5500 100%) !important;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
 }
@@ -62,68 +99,150 @@ html, body, [class*="css"], .stApp {
 
 /* Premium Page Header styling */
 .main-header {
-    font-size: 2.8rem;
+    font-size: 2.6rem;
     font-weight: 800;
     text-align: center;
-    background: linear-gradient(90deg, #a855f7 0%, #00f2fe 50%, #4facfe 100%);
+    background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     letter-spacing: -0.5px;
 }
 
 .subheader-custom {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 8px;
-    margin-top: 25px;
-    margin-bottom: 15px;
-    color: #f3f4f6;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 6px;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    color: var(--text-color);
 }
 
 /* Sidebar Styling enhancements */
 section[data-testid="stSidebar"] {
-    background-color: #0e1117 !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
 }
 
 section[data-testid="stSidebar"] .stMarkdown h1 {
-    font-size: 1.5rem !important;
-    background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+    font-size: 1.4rem !important;
+    background: var(--primary-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    font-weight: 800;
 }
 
 /* Styled metric widgets overrides */
 div[data-testid="stMetricValue"] {
     font-weight: 800 !important;
     font-size: 2.2rem !important;
+    color: var(--text-color) !important;
 }
 
 /* Glassy background for normal Streamlit tabs */
 div[data-baseweb="tab-list"] {
-    background-color: rgba(255, 255, 255, 0.02) !important;
+    background-color: var(--card-bg) !important;
     border-radius: 8px;
     padding: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
 }
 
 button[data-baseweb="tab"] {
     border-radius: 6px !important;
     font-weight: 600 !important;
+    color: var(--text-muted) !important;
+    transition: all 0.2s ease;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] {
-    background-color: rgba(255, 255, 255, 0.08) !important;
+    background-color: var(--card-hover-bg) !important;
+    color: var(--text-color) !important;
 }
 
 /* Custom horizontal line style */
 .gradient-hr {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
     border: none;
-    margin: 25px 0;
+    margin: 20px 0;
+}
+
+/* Skeleton Loader CSS */
+.skeleton-loader {
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(90deg, var(--card-bg) 25%, var(--card-hover-bg) 37%, var(--card-bg) 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin: 10px 0;
+}
+
+.skeleton-text {
+    width: 60%;
+    height: 16px;
+    background: linear-gradient(90deg, var(--card-bg) 25%, var(--card-hover-bg) 37%, var(--card-bg) 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.skeleton-title {
+    width: 35%;
+    height: 24px;
+    background: linear-gradient(90deg, var(--card-bg) 25%, var(--card-hover-bg) 37%, var(--card-bg) 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* Form Outcome Badges */
+.badge-w {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #10b981;
+    color: white;
+    font-weight: 800;
+    border-radius: 4px;
+    margin-right: 4px;
+    font-size: 0.85rem;
+}
+
+.badge-l {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #ef4444;
+    color: white;
+    font-weight: 800;
+    border-radius: 4px;
+    margin-right: 4px;
+    font-size: 0.85rem;
+}
+
+.badge-nr {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #6b7280;
+    color: white;
+    font-weight: 800;
+    border-radius: 4px;
+    margin-right: 4px;
+    font-size: 0.85rem;
+}
+
+/* Footer Section */
+.footer-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 50px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
 }
