@@ -1,90 +1,91 @@
-# 🏏 IPL Data Analytics & Win Predictor Dashboard
+# 🏏 IPL Analytics & Win Predictor Dashboard
 
-A production-grade, interactive cricket intelligence dashboard and real-time machine learning match outcome predictor built using **Python**, **Streamlit**, **Pandas**, **Plotly**, and **Scikit-learn**. This application provides a portfolio-worthy showcase of advanced sports analytics, data visualization, and predictive modeling.
+A production-grade, interactive sports intelligence dashboard and real-time machine learning match outcomes engine built using **Python**, **Streamlit**, **Pandas**, **Plotly**, and **Scikit-learn**. This dashboard features clean architecture, advanced ML comparative models, a Fantasy Cricket Assistant, Monte Carlo Match Simulators, and elegant glassmorphic visuals comparable to professional Tableau/PowerBI templates.
 
 ---
 
 ## 🌟 Key Features
 
-### 1. 🏠 Home Page & Season Comparisons
-- **General KPIs:** Real-time summary figures (total matches, seasons covered, Runs scored, boundaries, and wickets taken) updating dynamically with global filters.
-- **Season Comparison tab:** Line and stack-bar charts tracking average runs per match and boundary frequency (Sixes vs Fours) across seasons.
-- **CSV Data Exporter:** One-click download of filtered match lists as CSV reports.
-
-### 2. 👥 Enhanced Team Insights
-- **Performance Leaderboards:** Win percentages and total match wins sorted dynamically.
-- **Winning Streaks:** Calculates chronological highest winning streak and current active form streaks.
-- **Best Season Finder:** Dynamically identifies the season in which a team achieved their highest win rate (minimum 5 matches).
-- **Home vs Away Splits:** Classifies all matches as Home, Away, or Neutral venues and plots a grouped bar comparison.
-- **Form Badges:** Renders chronological win/loss status sequences (e.g., `W W L W W L L W W W`) with hover details (opponents, match dates).
-- **PDF Exporter:** Dynamically compiles a beautiful career summary report for any team using ReportLab.
-
-### 3. 🏏 Player Statistics & profiles
-- **Orange & Purple Cap Trends:** Season-by-season progression of top run scorers and wicket takers.
-- **Advanced Leaderboards:** Rankings for batsman consistency (averages vs. coefficient of variation), boundary ratios, bowler dot-ball rates, and bowler impact scores.
-- **Career Scatter Plots:** interactive strike rate vs average and economy vs wickets scatter graphs.
-- **Comparison Engine:** Side-by-side batting/bowling metric cards comparing any two players.
-- **PDF Resume:** Compile and download full career profiles as PDF files in-memory.
-
-### 4. 🏟️ Venue Characteristics
-- **Individual Stadium deep dive:** Analyzes average powerplay (overs 1-6) and death over (overs 16-20) scores, chasing vs defending ratios, and toss-winner correlation.
-- **Pitch Difficulty Index:** Tracks runs scored per wicket (identifies batting-friendly vs bowling-friendly venues).
-- **Venue Index Comparisons:** Aggregated index ranking table for all grounds hosting at least 5 matches.
-
-### 5. 📊 Advanced Analytics
-- **Overs Phase Analysis:** Comparative distributions of runs and wickets across innings phases.
-- **Over-by-Over Heatmap:** Visualizes average runs per over (1 to 20) across teams to show scoring acceleration rates.
-- **Chase Timeline Simulator:** Select any past match and watch how the batting team's win probability fluctuated over-by-over.
-
-### 6. 🤖 ML Match Win Predictor
-- **Multi-Pipeline Prediction:** Compare live chase predictions from **Logistic Regression (Calibrated)** and **Random Forest Classifiers**.
-- **Double Percentage Gauges:** Beautiful radial indicators and progress bars representing current chase outcomes.
-- **Predictive timeline:** Contextual run rate details and required scoring run rates updated on input adjustments.
-- **Predictive Features Impact:** Custom horizontal bar chart plotting the most important features driving predictions.
-- **PDF Report Exporter:** Download the current simulation parameters and predicted outcomes as a PDF report.
+| Tab Page | Core Capabilities |
+| :--- | :--- |
+| **🏠 Home Page** | Real-time global stats counters (KPI cards), season comparison dashboards, boundaries stacked trends, and raw match logs CSV downloader. |
+| **👥 Team Performance** | Chronological win streak calculators, home vs. away split analyses, head-to-head match histories, recent form HTML badge grids, and ReportLab career PDF exports. |
+| **🏏 Player Statistics** | Cap leaderboards (slider ranges), advanced consistency indexes, dot-ball metrics, batting/bowling scatter matrices, strike-rate trends, wicket shares, and side-by-side radar comparisons. |
+| **🏟️ Venue Insights** | Powerplay and death average run charts, pitch difficulty index mapping, stadium chase vs. defend biases, and a complete grounds index ranking table. |
+| **📊 Advanced Analytics** | Principal Component Analysis (PCA) 2D mapping, K-Means player role clustering, team similarity matrices, Toss-to-Winner Sankey flow diagrams, Sunburst hierarchies, and Parallel Coordinates. |
+| **🤖 Win Predictor** | Multi-classifier outcome predictions (Logistic Regression vs. Random Forest vs. Gradient Boosting), probability gauges, ROC curves, Confusion Matrix matrices, feature importance rankings, and CV box plots. |
+| **🧙‍♂️ Fantasy Assistant** | Dynamic role classifications (WK, BOWL, AR, BAT), Dream11 optimal squad generators (credit-constrained knapsack solver), and player similarity search. |
+| **🎮 Match Simulators** | Over-by-over Monte Carlo match simulations, first innings projected score regressors, season tournament winner calculators, and player auction value estimators. |
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Core Logic:** Python 3.8+
+- **Core Engine:** Python 3.8+
 - **Data Engineering:** Pandas, Numpy
-- **Interactive Visualizations:** Plotly Express & Plotly Graph Objects
+- **Data Visualizations:** Plotly Express & Plotly Graph Objects
 - **Dashboard Interface:** Streamlit (v1.30.0+)
-- **Machine Learning:** Scikit-learn (One-Hot Encoders, Standard Scalers, Logistic Regression, Random Forest Classifier)
-- **PDF Compiler:** ReportLab (v5.0.0+)
+- **Machine Learning:** Scikit-learn (preprocessors, estimators, metrics)
+- **PDF Exporter:** ReportLab (v5.0.0+)
 - **Styling:** CSS3 & HTML5 (custom Glassmorphic dashboard styles)
 
 ---
 
-## 📂 Folder Structure
+## 📂 Production Folder Structure
 
 ```
 ipl_dashboard/
-│
-├── data/
-│   ├── matches.csv              # Automatically downloaded on first launch (~144KB)
-│   └── deliveries.csv           # Automatically downloaded on first launch (~18MB)
-│
-├── src/
-│   ├── __init__.py
-│   ├── data_loader.py           # Handles downloads, cleans data, standardizes team names
-│   ├── preprocessing.py         # Formulates vectorized inputs and targets for pipelines
-│   ├── team_analysis.py         # Calculates winning streaks, seasons, and home-away splits
-│   ├── player_analysis.py       # Aggregates profiles, Cap trends, and advanced scatter plots
-│   ├── venue_analysis.py        # Venue comparisons, phase stats, and difficulty ratings
-│   ├── win_predictor.py         # ML pipelines, feature importances, and outcome classifiers
-│   └── pdf_generator.py         # ReportLab-based PDF report compiler
-│
-├── models/
-│   └── win_prediction_model.pkl # Pickled classifier pipelines (Auto-trained on launch)
+├── app.py                     # Entry point & Page Router
+├── requirements.txt           # Package dependencies
 │
 ├── assets/
-│   └── custom.css               # Styling rules for Dark/Light theme switching & animations
+│   └── custom.css             # Glassmorphic custom CSS styling rules
 │
-├── app.py                       # Main routing entrypoint of the dashboard
-├── requirements.txt             # Project requirements
-└── README.md                    # This readme file
+├── data/
+│   ├── matches.csv              # Match outcomes dataset (Auto-downloaded)
+│   └── deliveries.csv           # Ball-by-ball deliveries dataset (Auto-downloaded)
+│
+├── config/
+│   └── settings.py            # Global styles and theme config variables
+│
+├── constants/
+│   ├── paths.py               # Paths configurations
+│   └── teams.py               # Team mappings and color configurations
+│
+├── components/
+│   ├── ui.py                  # Custom HTML cards, loaders, and headers
+│   ├── sidebar.py             # Navigation router and filter components
+│   └── search.py              # Autocomplete search redirect helper
+│
+├── services/
+│   ├── data_loader.py         # Data cleaning cached functions
+│   ├── preprocessing.py       # ML vector preprocessors
+│   ├── win_predictor.py       # ML training pipeline and predictions
+│   ├── analytics_service.py   # PCA, K-Means clustering, and matrices math
+│   ├── fantasy_engine.py      # Dream11 lineup selector and points calculators
+│   ├── simulator_service.py   # Monte Carlo simulators and score predictors
+│   └── valuation_service.py   # Player similarities and auction valuators
+│
+├── charts/
+│   ├── team.py                # Team stats Plotly graphs
+│   ├── player.py              # Player cap trends and progression lines
+│   ├── venue.py               # Stadium averages and chase ratios
+│   ├── advanced.py            # Advanced charts (Sankey, Sunburst, PCA scatter)
+│   └── ml.py                  # ROC, Confusion Matrix, and CV box plots
+│
+├── pages/
+│   ├── home.py                # Home tab visualizer
+│   ├── team_analysis.py       # Teams tab visualizer
+│   ├── player_analysis.py     # Players tab visualizer
+│   ├── venue_analysis.py      # Venues tab visualizer
+│   ├── advanced_analytics.py  # Advanced analytics visualizer
+│   ├── win_predictor.py       # Machine learning win predictor visualizer
+│   ├── fantasy_assistant.py   # Fantasy cricket assistant visualizer
+│   └── simulators.py          # Monte Carlo simulator tab visualizer
+│
+└── utils/
+    ├── pdf_generator.py       # PDF report generator (ReportLab)
+    └── export_helpers.py      # CSV and Excel data exporters
 ```
 
 ---
@@ -92,14 +93,11 @@ ipl_dashboard/
 ## 🚀 Setup & Local Installation
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.9+
 - Internet connection (required on first launch to automatically download datasets from raw mirrors)
 
-### 1. Get the files
-Clone this repository or ensure all folder structures are preserved under `ipl_dashboard/`.
-
-### 2. Set up Virtual Environment & Install Requirements
-Create a virtual environment and install package dependencies:
+### 1. Set up Virtual Environment & Install Requirements
+Create a virtual environment and install dependencies:
 ```bash
 # Navigate to project root
 cd ipl_dashboard
@@ -114,33 +112,33 @@ source venv/bin/activate   # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Run the App
+### 2. Run the Application
 Launch the Streamlit dev server:
 ```bash
 streamlit run app.py
 ```
 On first launch, the app will:
-1. Automatically download `matches.csv` and `deliveries.csv` if missing.
-2. Train the Logistic Regression and Random Forest win prediction classifiers.
+1. Automatically download `matches.csv` and `deliveries.csv` if missing in `data/`.
+2. Train the Logistic Regression, Random Forest, and Gradient Boosting win prediction classifiers.
 3. Pickle and save the model file to `models/win_prediction_model.pkl`.
 4. Open the dashboard in your default browser at `http://localhost:8501`.
 
 ---
 
-## 🌐 Deployment (Streamlit Community Cloud)
+## 🌐 Deployment
 
-You can easily host this dashboard for free on Streamlit Community Cloud:
+### Docker Deployment
+Build and run the container locally:
+```bash
+# Build Docker image
+docker build -t ipl-dashboard .
 
-1. Upload the files to a public GitHub repository. (Note: You can omit the `data/` and `models/` folders, as the dashboard automatically downloads the datasets and trains the model on first launch).
-2. Go to [share.streamlit.io](https://share.streamlit.io/) and log in with your GitHub account.
-3. Click **Deploy an app**, then select your repository, branch, and specify `app.py` as the entry point.
-4. Click **Deploy!** Your app will be live with a shareable URL in minutes.
+# Run Docker container
+docker run -p 8501:8501 ipl-dashboard
+```
 
----
-
-## 🔮 Future Enhancements
-
-- **Ball-by-Ball Live Timeline:** Expand match simulator to plot probability changes ball-by-ball.
-- **Deep Learning Predictions:** Incorporate TensorFlow or PyTorch sequential models (LSTMs) to capture time-series progression.
-- **Bowler vs Batsman Matchup Tool:** Compare historical batsman records against specific bowlers.
-- **Real-Time Data Scraping:** Connect to Cricket API endpoints to ingest ongoing IPL match data.
+### Streamlit Community Cloud
+1. Upload the folder to a public GitHub repository.
+2. Go to [share.streamlit.io](https://share.streamlit.io/) and select **Deploy an app**.
+3. Select your repository, branch, and specify `app.py` as the entrypoint.
+4. Click **Deploy!**
