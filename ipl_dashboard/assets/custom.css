@@ -1,7 +1,7 @@
-/* Imports a modern, clean font from Google Fonts */
+/* Imports Outfit font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
-/* Apply font family to entire application */
+/* Main font styling applications */
 html, body, [class*="css"], .stApp {
     font-family: 'Outfit', sans-serif !important;
     background: var(--bg-gradient) !important;
@@ -22,44 +22,34 @@ html, body, [class*="css"], .stApp {
 }
 
 @keyframes pulseGlow {
-    0% {
-        box-shadow: 0 0 5px rgba(0, 242, 254, 0.2);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-    }
-    100% {
-        box-shadow: 0 0 5px rgba(0, 242, 254, 0.2);
-    }
+    0% { box-shadow: 0 0 8px rgba(0, 242, 254, 0.2); }
+    50% { box-shadow: 0 0 25px rgba(0, 242, 254, 0.4); }
+    100% { box-shadow: 0 0 8px rgba(0, 242, 254, 0.2); }
 }
 
 @keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
-/* Glassmorphism containers for KPI cards and summaries */
+/* Glassmorphism KPI layout styling */
 .kpi-card {
     background: var(--card-bg) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 22px;
     margin: 10px 0;
     box-shadow: 0 8px 32px 0 var(--shadow-color);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    animation: fadeInUp 0.5s ease-out forwards;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: fadeInUp 0.45s ease-out forwards;
 }
 
 .kpi-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     border: 1px solid var(--border-hover-color);
-    box-shadow: 0 12px 40px 0 var(--shadow-hover-color);
+    box-shadow: 0 16px 45px 0 var(--shadow-hover-color);
 }
 
 .kpi-title {
@@ -79,6 +69,7 @@ html, body, [class*="css"], .stApp {
     -webkit-text-fill-color: transparent;
 }
 
+/* Gradient details overrides */
 .kpi-orange {
     background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
     -webkit-background-clip: text !important;
@@ -97,7 +88,6 @@ html, body, [class*="css"], .stApp {
     -webkit-text-fill-color: transparent !important;
 }
 
-/* Premium Page Header styling */
 .main-header {
     font-size: 2.6rem;
     font-weight: 800;
@@ -119,7 +109,7 @@ html, body, [class*="css"], .stApp {
     color: var(--text-color);
 }
 
-/* Sidebar Styling enhancements */
+/* Sidebar design enhancements */
 section[data-testid="stSidebar"] {
     background-color: var(--sidebar-bg) !important;
     border-right: 1px solid var(--border-color);
@@ -136,7 +126,6 @@ section[data-testid="stSidebar"] .stMarkdown h1 {
     font-weight: 800;
 }
 
-/* Styled metric widgets overrides */
 div[data-testid="stMetricValue"] {
     font-weight: 800 !important;
     font-size: 2.2rem !important;
@@ -163,7 +152,6 @@ button[data-baseweb="tab"][aria-selected="true"] {
     color: var(--text-color) !important;
 }
 
-/* Custom horizontal line style */
 .gradient-hr {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border-color), transparent);
@@ -171,7 +159,23 @@ button[data-baseweb="tab"][aria-selected="true"] {
     margin: 20px 0;
 }
 
-/* Skeleton Loader CSS */
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover-color);
+}
+
+/* Skeleton Loading CSS */
 .skeleton-loader {
     width: 100%;
     height: 150px;
@@ -203,7 +207,7 @@ button[data-baseweb="tab"][aria-selected="true"] {
     margin-bottom: 15px;
 }
 
-/* Form Outcome Badges */
+/* Form outcome labels */
 .badge-w {
     display: inline-block;
     padding: 3px 8px;
